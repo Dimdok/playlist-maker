@@ -2,7 +2,6 @@ package com.example.playlistmaker
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -25,16 +24,12 @@ class MainActivity : AppCompatActivity() {
         val libraryButton = findViewById<Button>(R.id.library_button)
         val settingsButton = findViewById<Button>(R.id.settings_button)
 
-        // реализация клика по кнопке через анонимный класс
-        val displaySearchIntent = Intent(this, SearchActivity::class.java)
-        val buttonClickListener: View.OnClickListener = object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                startActivity(displaySearchIntent)
-            }
+        // реализация клика по кнопке
+        searchButton.setOnClickListener {
+            val displayIntent = Intent(this, SearchActivity::class.java)
+            startActivity(displayIntent)
         }
-        searchButton.setOnClickListener(buttonClickListener)
 
-        // реализация клика по кнопке через лямбда-выражение
         libraryButton.setOnClickListener {
             val displayIntent = Intent(this, LibraryActivity::class.java)
             startActivity(displayIntent)

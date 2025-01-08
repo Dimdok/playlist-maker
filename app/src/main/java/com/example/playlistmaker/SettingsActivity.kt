@@ -1,8 +1,11 @@
 package com.example.playlistmaker
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Switch
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -19,11 +22,60 @@ class SettingsActivity : AppCompatActivity() {
             insets
         }
 
+        // кнопка Вернуться назад
         val goBackButton = findViewById<Button>(R.id.go_back_button)
-
         goBackButton.setOnClickListener {
             val displayIntent = Intent(this, MainActivity::class.java)
             startActivity(displayIntent)
         }
+
+        // TODO: переключатель темной темы
+        val themeSwitch = findViewById<Switch>(R.id.themeSwitch)
+        themeSwitch.setOnCheckedChangeListener { _, isChecked ->
+            // функционал смены темы
+        }
+
+        // кнопка Поделиться приложением
+        val shareAppButton = findViewById<TextView>(R.id.shareAppButton)
+        shareAppButton.setOnClickListener {
+            shareApp()
+        }
+
+        // кнопка Написать в поддержку
+        val writeSupportButton = findViewById<TextView>(R.id.writeSupportButton)
+        writeSupportButton.setOnClickListener {
+            writeSupportEmail()
+        }
+
+        // кнопка Пользовательское соглашение
+        val userAgreementButton = findViewById<TextView>(R.id.userAgreementButton)
+        userAgreementButton.setOnClickListener {
+            openUserAgreement()
+        }
+    }
+
+    private fun shareApp() {
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, getString(R.string.android_practicum_url))
+        }
+        startActivity(Intent.createChooser(intent, getString(R.string.share_app)))
+    }
+
+    private fun writeSupportEmail() {
+        val intent = Intent(Intent.ACTION_SENDTO).apply {
+            data = Uri.parse("mailto:${getString(R.string.support_email)}")
+            putExtra(Intent.EXTRA_SUBJECT, getString(R.string.email_subject))
+            putExtra(Intent.EXTRA_TEXT, getString(R.string.email_body))
+        }
+        startActivity(Intent.createChooser(intent, getString(R.string.write_support)))
+    }
+
+    private fun openUserAgreement() {
+        val url = getString(R.string.user_agreement_url)
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse(url)
+        }
+        startActivity(intent)
     }
 }
