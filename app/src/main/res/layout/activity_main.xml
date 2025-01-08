@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/typography"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -12,62 +13,29 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="start"
-            android:paddingHorizontal="@dimen/main_padding"
-            android:background="@color/blue">
+        <TextView
+            style="@style/header"
+            android:text="@string/app_title" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:paddingVertical="12dp"
-                android:text="@string/app_title"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_size_large" />
-        </FrameLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/blue"
-            android:orientation="vertical"
-            android:padding="@dimen/main_padding">
+        <LinearLayout style="@style/main_page_container">
 
             <Button
                 android:id="@+id/search_button"
                 style="@style/big_button"
                 android:text="@string/button_big_search"
-                app:cornerRadius="@dimen/big_button_radius"
-                app:icon="@drawable/search"
-                app:iconGravity="textStart"
-                app:iconPadding="@dimen/big_button_icon_padding"
-                app:iconSize="@dimen/icon_size"
-                app:iconTint="@color/text" />
+                app:icon="@drawable/search" />
 
             <Button
                 android:id="@+id/library_button"
                 style="@style/big_button"
                 android:text="@string/button_big_library"
-                app:cornerRadius="@dimen/big_button_radius"
-                app:icon="@drawable/library"
-                app:iconGravity="textStart"
-                app:iconPadding="@dimen/big_button_icon_padding"
-                app:iconSize="@dimen/icon_size"
-                app:iconTint="@color/text" />
+                app:icon="@drawable/library" />
 
             <Button
                 android:id="@+id/settings_button"
                 style="@style/big_button"
                 android:text="@string/button_big_settings"
-                app:cornerRadius="@dimen/big_button_radius"
-                app:icon="@drawable/settings"
-                app:iconGravity="textStart"
-                app:iconPadding="@dimen/big_button_icon_padding"
-                app:iconSize="@dimen/icon_size"
-                app:iconTint="@color/text" />
+                app:icon="@drawable/settings" />
 
         </LinearLayout>
     </LinearLayout>
