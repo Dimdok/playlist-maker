@@ -19,22 +19,20 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        // объявляем переменные для кнопок
-        val searchButton = findViewById<Button>(R.id.search_button)
-        val libraryButton = findViewById<Button>(R.id.library_button)
-        val settingsButton = findViewById<Button>(R.id.settings_button)
-
         // реализация клика по кнопке
+        val searchButton = findViewById<Button>(R.id.search_button)
         searchButton.setOnClickListener {
             val displayIntent = Intent(this, SearchActivity::class.java)
             startActivity(displayIntent)
         }
 
+        val libraryButton = findViewById<Button>(R.id.library_button)
         libraryButton.setOnClickListener {
             val displayIntent = Intent(this, LibraryActivity::class.java)
             startActivity(displayIntent)
         }
 
+        val settingsButton = findViewById<Button>(R.id.settings_button)
         settingsButton.setOnClickListener {
             val displayIntent = Intent(this, SettingsActivity::class.java)
             startActivity(displayIntent)

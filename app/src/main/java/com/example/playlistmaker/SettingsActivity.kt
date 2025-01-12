@@ -25,8 +25,7 @@ class SettingsActivity : AppCompatActivity() {
         // кнопка Вернуться назад
         val goBackButton = findViewById<Button>(R.id.go_back_button)
         goBackButton.setOnClickListener {
-            val displayIntent = Intent(this, MainActivity::class.java)
-            startActivity(displayIntent)
+            finish()
         }
 
         // TODO: переключатель темной темы

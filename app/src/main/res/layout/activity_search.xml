@@ -23,46 +23,42 @@
 
             <Button
                 android:id="@+id/go_back_button"
-                style="@style/basic_button"
-                android:layout_height="match_parent"
-                android:layout_gravity="start"
-                android:backgroundTint="?attr/colorPrimary"
-                android:contentDescription="@string/go_back"
-                app:icon="@drawable/ic_arrow_back"
-                app:iconPadding="@dimen/icon_size"
-                app:iconSize="@dimen/icon_size"
-                app:iconTint="?attr/colorOnPrimary" />
+                style="@style/go_back_button" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:background="?attr/colorPrimary"
-                android:paddingVertical="12dp"
-                android:text="@string/search"
-                android:textSize="@dimen/text_size_large" />
+                style="@style/header_text"
+                android:text="@string/search" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/inputGroup"
-            style="@style/input_layout">
+        <FrameLayout style="@style/input_layout">
 
+            <!-- иконка лупы -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/ic_search_16"
+                app:tint="?attr/colorOnSurface" />
+
+            <!-- текстовое поле -->
             <EditText
                 android:id="@+id/inputEditText"
                 style="@style/input_text"
-                android:layout_gravity="start"
-                android:drawableStart="@drawable/ic_search_16"
-                android:hint="@string/search_hint" />
+                android:hint="@string/search" />
 
+            <!-- иконка очистки инпута -->
             <ImageView
                 android:id="@+id/clearIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="8dp"
                 android:background="@null"
                 android:contentDescription="@string/clear"
-                android:src="@android:drawable/ic_menu_close_clear_cancel"
-                android:visibility="gone" />
-        </LinearLayout>
+                android:src="@drawable/ic_clear_16"
+                android:visibility="gone"
+                app:tint="?attr/colorOnSurface" />
+        </FrameLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,5 @@
 package com.example.playlistmaker
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -16,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat
 
 class SearchActivity : AppCompatActivity() {
     private var savedInputText: String? = null
+    private val inputTextKey: String = "SAVED_INPUT_TEXT"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,8 +30,7 @@ class SearchActivity : AppCompatActivity() {
         // кнопка Вернуться назад
         val goBackButton = findViewById<Button>(R.id.go_back_button)
         goBackButton.setOnClickListener {
-            val displayIntent = Intent(this, MainActivity::class.java)
-            startActivity(displayIntent)
+            finish()
         }
 
         val inputEditText = findViewById<EditText>(R.id.inputEditText)
@@ -57,12 +56,6 @@ class SearchActivity : AppCompatActivity() {
             if (hasFocus) showKeyboard(inputEditText)
         }
 
-        // восстановление текста после пересоздания Activity
-        savedInstanceState?.let {
-            savedInputText = it.getString("SAVED_INPUT_TEXT")
-            inputEditText.setText(savedInputText)
-        }
-
         clearButton.setOnClickListener {
             inputEditText.text.clear()
             savedInputText = null
@@ -71,14 +64,16 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+    // сохранение стейта инпута
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString("SAVED_INPUT_TEXT", savedInputText)
+        outState.putString(inputTextKey, savedInputText)
     }
 
+    // восстановление стейта инпута после пересоздания Activity
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        savedInputText = savedInstanceState.getString("SAVED_INPUT_TEXT")
+        savedInputText = savedInstanceState.getString(inputTextKey)
         findViewById<EditText>(R.id.inputEditText).setText(savedInputText)
     }
 
