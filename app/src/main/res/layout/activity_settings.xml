@@ -5,103 +5,59 @@
     android:id="@+id/settings"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/typography"
     tools:context=".SettingsActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?attr/colorPrimary"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:background="@color/white"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/go_back_button"
-                android:layout_width="@dimen/min_button_width"
-                android:layout_height="match_parent"
-                android:backgroundTint="@color/white"
-                android:contentDescription="@string/go_back"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                android:stateListAnimator="@null"
-                android:text="@null"
-                app:cornerRadius="0dp"
-                app:icon="@drawable/arrow_back"
-                app:iconPadding="@dimen/icon_size"
-                app:iconSize="@dimen/icon_size"
-                app:iconTint="@color/text" />
+                style="@style/go_back_button" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@color/white"
-                android:paddingVertical="12dp"
-                android:text="@string/settings_title"
-                android:textColor="@color/text"
-                android:textSize="@dimen/text_size_large" />
+                style="@style/header_text"
+                android:text="@string/settings" />
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
             android:orientation="vertical"
             android:paddingVertical="@dimen/main_padding">
 
-            <FrameLayout style="@style/settings_list_item">
+            <Switch
+                android:id="@+id/themeSwitch"
+                style="@style/settings_theme_switch"
+                android:text="@string/dark_theme"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
 
-                <TextView
-                    style="@style/item_text"
-                    android:text="@string/dark_theme" />
+            <TextView
+                android:id="@+id/shareAppButton"
+                style="@style/item_themed"
+                android:text="@string/share_app"
+                app:drawableEndCompat="@drawable/ic_share" />
 
-                <Switch
-                    android:layout_width="@dimen/min_button_width"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="end"
-                    android:contentDescription="@string/switch_theme"
-                    tools:ignore="UseSwitchCompatOrMaterialXml" />
-            </FrameLayout>
+            <TextView
+                android:id="@+id/writeSupportButton"
+                style="@style/item_themed"
+                android:text="@string/write_support"
+                app:drawableEndCompat="@drawable/ic_support" />
 
-            <FrameLayout style="@style/settings_list_item">
-
-                <TextView
-                    style="@style/item_text"
-                    android:text="@string/share" />
-
-                <ImageView
-                    style="@style/item_icon"
-                    android:contentDescription="@string/share"
-                    android:src="@drawable/share" />
-            </FrameLayout>
-
-            <FrameLayout style="@style/settings_list_item">
-
-                <TextView
-                    style="@style/item_text"
-                    android:text="@string/support_chat" />
-
-                <ImageView
-                    style="@style/item_icon"
-                    android:contentDescription="@string/support_chat"
-                    android:src="@drawable/support" />
-            </FrameLayout>
-
-            <FrameLayout style="@style/settings_list_item">
-
-                <TextView
-                    style="@style/item_text"
-                    android:text="@string/eula" />
-
-                <ImageView
-                    style="@style/item_icon"
-                    android:contentDescription="@string/eula"
-                    android:src="@drawable/arrow_forward" />
-            </FrameLayout>
+            <TextView
+                android:id="@+id/userAgreementButton"
+                style="@style/item_themed"
+                android:text="@string/user_agreement"
+                app:drawableEndCompat="@drawable/ic_arrow_forward" />
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

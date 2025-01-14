@@ -1,9 +1,16 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.PlaylistMaker" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="Theme.PlaylistMaker" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/yp_white</item>
+        <item name="colorOnPrimary">@color/yp_black</item>
+        <item name="colorPrimaryVariant">@color/yp_text_gray</item>
+        <item name="colorSurface">@color/yp_lighter_gray</item>
+        <item name="colorOnSurface">@color/yp_text_gray</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/yp_blue</item>
+        <item name="colorSecondaryVariant">@color/yp_blue_light</item>
+        <item name="colorOnSecondary">@color/yp_white</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
     </style>
-
-    <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker" />
 </resources>

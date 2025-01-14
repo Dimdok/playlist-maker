@@ -5,19 +5,60 @@
     android:id="@+id/search"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/typography"
     tools:context=".SearchActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?attr/colorPrimary"
         android:orientation="vertical">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/activity_placeholder"
-            android:textSize="20sp" />
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:background="?attr/colorPrimary"
+            android:orientation="horizontal">
 
+            <Button
+                android:id="@+id/go_back_button"
+                style="@style/go_back_button" />
+
+            <TextView
+                style="@style/header_text"
+                android:text="@string/search" />
+        </LinearLayout>
+
+        <FrameLayout style="@style/input_layout">
+
+            <!-- иконка лупы -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/ic_search_16"
+                app:tint="?attr/colorOnSurface" />
+
+            <!-- текстовое поле -->
+            <EditText
+                android:id="@+id/inputEditText"
+                style="@style/input_text"
+                android:hint="@string/search" />
+
+            <!-- иконка очистки инпута -->
+            <ImageView
+                android:id="@+id/clearIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="8dp"
+                android:background="@null"
+                android:contentDescription="@string/clear"
+                android:src="@drawable/ic_clear_16"
+                android:visibility="gone"
+                app:tint="?attr/colorOnSurface" />
+        </FrameLayout>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

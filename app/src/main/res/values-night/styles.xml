@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="big_button" parent="big_button_base">
+        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="android:backgroundTint">?attr/colorOnPrimary</item>
+        <item name="iconTint">?attr/colorPrimary</item>
+    </style>
+
+    <style name="header" parent="header_base">
+        <item name="android:background">?attr/colorPrimary</item>
+    </style>
+
+    <style name="main_page_container" parent="container_base">
+        <item name="android:background">?attr/colorPrimary</item>
+    </style>
+
+    <style name="item_themed" parent="settings_item_base">
+        <item name="drawableTint">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="input_text" parent="input_text_base">
+        <item name="android:textColor">?attr/colorPrimary</item>
+    </style>
+</resources>

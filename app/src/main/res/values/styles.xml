@@ -1,41 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="big_button">
+
+    <style name="typography">
+        <item name="android:textSize">@dimen/text_size_main</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="basic_button" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:layout_width">@dimen/min_button_width</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
         <item name="android:stateListAnimator">@null</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="cornerRadius">0dp</item>
+    </style>
+
+    <style name="go_back_button" parent="basic_button">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">start</item>
+        <item name="android:backgroundTint">?attr/colorPrimary</item>
+        <item name="android:contentDescription">@string/go_back</item>
+        <item name="icon">@drawable/ic_arrow_back</item>
+        <item name="iconPadding">@dimen/icon_size</item>
+        <item name="iconSize">@dimen/icon_size</item>
+        <item name="iconTint">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="header_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">end</item>
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:paddingVertical">12dp</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+
+    <style name="big_button_base" parent="basic_button">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_marginBottom">16dp</item>
-        <item name="android:backgroundTint">@color/white</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textColor">@color/text</item>
+        <item name="cornerRadius">16dp</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">8dp</item>
+        <item name="iconSize">@dimen/icon_size</item>
         <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
     </style>
 
-    <style name="settings_list_item">
+    <style name="big_button" parent="big_button_base">
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:backgroundTint">?attr/colorPrimary</item>
+        <item name="iconTint">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="header_base">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:backgroundTint">@color/white</item>
-        <item name="android:orientation">horizontal</item>
         <item name="android:paddingHorizontal">@dimen/main_padding</item>
+        <item name="android:paddingVertical">12dp</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:textColor">?attr/colorOnSecondary</item>
     </style>
 
-    <style name="item_text">
-        <item name="android:layout_width">wrap_content</item>
+    <style name="header" parent="header_base">
+        <item name="android:background">?attr/colorSecondary</item>
+    </style>
+
+    <style name="container_base">
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_gravity">start</item>
-        <item name="android:textColor">@color/text</item>
-        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">@dimen/main_padding</item>
+    </style>
+
+    <style name="main_page_container" parent="container_base">
+        <item name="android:background">?attr/colorSecondary</item>
+    </style>
+
+    <style name="settings_item_base">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingVertical">@dimen/main_padding</item>
+        <item name="android:paddingStart">@dimen/main_padding</item>
+        <item name="android:paddingEnd">@dimen/main_padding</item>
+        <item name="android:textAppearance">@style/typography</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:paddingVertical">18dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:backgroundTint">?attr/colorPrimary</item>
+        <item name="drawableTint">?attr/colorPrimaryVariant</item>
     </style>
 
-    <style name="item_icon">
-        <item name="android:layout_width">@dimen/min_button_width</item>
-        <item name="android:layout_height">match_parent</item>
+    <style name="item_themed" parent="settings_item_base">
+        <item name="drawableTint">?attr/colorPrimaryVariant</item>
+    </style>
+
+    <style name="settings_theme_switch" parent="settings_item_base">
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
         <item name="android:paddingVertical">18dp</item>
-        <item name="android:layout_gravity">end</item>
+        <item name="android:paddingStart">@dimen/main_padding</item>
+        <item name="android:paddingEnd">8dp</item>
+    </style>
+
+    <style name="input_layout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">@dimen/main_padding</item>
+        <item name="android:background">@drawable/rounded_background_8</item>
+        <item name="android:backgroundTint">?attr/colorSurface</item>
+    </style>
+
+    <style name="input_text_base" parent="ThemeOverlay.Material3.TextInputEditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">36dp</item>
+        <item name="android:layout_marginStart">36dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:inputType">text</item>
+        <item name="android:textColorHint">?attr/colorOnSurface</item>
+        <item name="android:drawablePadding">8dp</item>
+        <item name="drawableTint">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="input_text" parent="input_text_base">
+        <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
 </resources>
