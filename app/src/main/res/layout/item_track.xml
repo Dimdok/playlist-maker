@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/colorPrimary"
+    android:padding="@dimen/main_gap"
+    android:theme="@style/typography">
+
+    <!-- обложка трека -->
+    <ImageView
+        android:id="@+id/artworkImageView"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:contentDescription="@string/cover_image"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- контейнер для текстовой информации -->
+    <LinearLayout
+        android:id="@+id/textContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/artworkImageView"
+        app:layout_constraintEnd_toStartOf="@id/nextIconImageView"
+        app:layout_constraintStart_toEndOf="@id/artworkImageView"
+        app:layout_constraintTop_toTopOf="@id/artworkImageView"
+        app:layout_constraintVertical_bias="0.5">
+
+        <!-- наименование трека -->
+        <TextView
+            android:id="@+id/trackNameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1" />
+
+
+        <!-- контейнер для исполнителя и времени -->
+        <LinearLayout
+            android:id="@+id/artistTimeContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!-- имя исполнителя -->
+            <TextView
+                android:id="@+id/artistNameTextView"
+                style="@style/grey_white_text_and_ic"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textSize="@dimen/text_size_small" />
+
+            <!-- разделитель символ • а не иконка -->
+            <TextView
+                android:id="@+id/dotSeparator"
+                style="@style/grey_white_text_and_ic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:text="•"
+                android:textSize="@dimen/text_size_large" />
+
+            <!-- длительность трека -->
+            <TextView
+                android:id="@+id/trackTimeTextView"
+                style="@style/grey_white_text_and_ic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_small" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- иконка > -->
+    <ImageView
+        android:id="@+id/nextIconImageView"
+        style="@style/grey_white_text_and_ic"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_arrow_forward"
+        app:layout_constraintBottom_toBottomOf="@id/artworkImageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/artworkImageView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

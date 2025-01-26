@@ -61,7 +61,7 @@
     <style name="header_base">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingHorizontal">@dimen/main_padding</item>
+        <item name="android:paddingHorizontal">@dimen/main_gap</item>
         <item name="android:paddingVertical">12dp</item>
         <item name="android:textSize">@dimen/text_size_large</item>
         <item name="android:textColor">?attr/colorOnSecondary</item>
@@ -75,7 +75,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:padding">@dimen/main_padding</item>
+        <item name="android:padding">@dimen/main_gap</item>
     </style>
 
     <style name="main_page_container" parent="container_base">
@@ -86,9 +86,9 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">horizontal</item>
-        <item name="android:paddingVertical">@dimen/main_padding</item>
-        <item name="android:paddingStart">@dimen/main_padding</item>
-        <item name="android:paddingEnd">@dimen/main_padding</item>
+        <item name="android:paddingVertical">@dimen/main_gap</item>
+        <item name="android:paddingStart">@dimen/main_gap</item>
+        <item name="android:paddingEnd">@dimen/main_gap</item>
         <item name="android:textAppearance">@style/typography</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:clickable">true</item>
@@ -107,14 +107,14 @@
         <item name="android:focusable">true</item>
         <item name="android:background">?android:attr/selectableItemBackground</item>
         <item name="android:paddingVertical">18dp</item>
-        <item name="android:paddingStart">@dimen/main_padding</item>
+        <item name="android:paddingStart">@dimen/main_gap</item>
         <item name="android:paddingEnd">8dp</item>
     </style>
 
     <style name="input_layout">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">@dimen/main_padding</item>
+        <item name="android:layout_margin">@dimen/main_gap</item>
         <item name="android:background">@drawable/rounded_background_8</item>
         <item name="android:backgroundTint">?attr/colorSurface</item>
     </style>
@@ -133,5 +133,10 @@
 
     <style name="input_text" parent="input_text_base">
         <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="grey_white_text_and_ic">
+        <item name="android:textColor">?attr/colorPrimaryVariant</item>
+        <item name="android:backgroundTint">?attr/colorPrimaryVariant</item>
     </style>
 </resources>

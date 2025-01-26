@@ -2,8 +2,8 @@
     <style name="Theme.PlaylistMaker" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/yp_black</item>
-        <item name="colorPrimaryVariant">@color/yp_text_gray</item>
         <item name="colorOnPrimary">@color/yp_white</item>
+        <item name="colorPrimaryVariant">@color/yp_text_gray</item>
         <item name="colorSurface">@color/yp_white</item>
         <item name="colorOnSurface">@color/yp_black</item>
         <!-- Secondary brand color. -->

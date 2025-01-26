@@ -30,7 +30,9 @@
                 android:text="@string/search" />
         </LinearLayout>
 
-        <FrameLayout style="@style/input_layout">
+        <FrameLayout
+            android:id="@+id/inputLayout"
+            style="@style/input_layout">
 
             <!-- иконка лупы -->
             <ImageView
@@ -60,5 +62,15 @@
                 android:visibility="gone"
                 app:tint="?attr/colorOnSurface" />
         </FrameLayout>
+
+        <!-- RecyclerView для отображения списка треков -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/inputLayout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:listitem="@layout/item_track" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
