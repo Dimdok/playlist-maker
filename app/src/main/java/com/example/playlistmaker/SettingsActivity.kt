@@ -14,8 +14,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class SettingsActivity : AppCompatActivity() {
-    private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var themeSwitch: Switch
+    private val appSettingsPrefsName: String = "AppSettings"
+    private val darkThemeKey: String = "DarkTheme"
+    private var sharedPreferences: SharedPreferences = getSharedPreferences(appSettingsPrefsName, MODE_PRIVATE)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,8 +35,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         // переключатель темной темы
-        sharedPreferences = getSharedPreferences("AppSettings", MODE_PRIVATE)
-        themeSwitch = findViewById(R.id.themeSwitch)
+        val themeSwitch: Switch = findViewById(R.id.themeSwitch)
         themeSwitch.isChecked = isDarkThemeEnabled()
         themeSwitch.setOnCheckedChangeListener { _, isChecked ->
             setDarkTheme(isChecked)
@@ -86,14 +86,13 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun isDarkThemeEnabled(): Boolean {
-        return sharedPreferences.getBoolean("DarkTheme", false)
+        return sharedPreferences.getBoolean(darkThemeKey, false)
     }
 
     private fun setDarkTheme(enabled: Boolean) {
         val mode = if (enabled) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
         AppCompatDelegate.setDefaultNightMode(mode)
-        sharedPreferences.edit().putBoolean("DarkTheme", enabled).apply()
-
+        sharedPreferences.edit().putBoolean(darkThemeKey, enabled).apply()
         delegate.applyDayNight()
     }
 }

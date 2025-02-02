@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="half_main_gap">8dp</dimen>
     <dimen name="main_gap">16dp</dimen>
     <dimen name="text_size_small">11sp</dimen>
     <dimen name="text_size_main">16sp</dimen>

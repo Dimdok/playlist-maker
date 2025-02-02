@@ -12,20 +12,16 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class SearchActivity : AppCompatActivity() {
     private var savedInputText: String? = null
     private val inputTextKey: String = "SAVED_INPUT_TEXT"
-
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: TrackAdapter
-    private lateinit var inputEditText: EditText
-    private lateinit var clearIcon: ImageView
-
     private val allTracks = createTestTracks() // Все треки
     private var filteredTracks = mutableListOf<Track>() // Отфильтрованные треки
+    private lateinit var adapter: TrackAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,14 +34,14 @@ class SearchActivity : AppCompatActivity() {
         }
 
         // Инициализация RecyclerView
-        recyclerView = findViewById(R.id.recyclerView)
+        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
         adapter = TrackAdapter(filteredTracks)
         recyclerView.adapter = adapter
 
         // Инициализация элементов поиска
-        inputEditText = findViewById(R.id.inputEditText)
-        clearIcon = findViewById(R.id.clearIcon)
+        val inputEditText: EditText = findViewById(R.id.inputEditText)
+        val clearIcon: ImageView = findViewById(R.id.clearIcon)
 
         // кнопка Вернуться назад
         val goBackButton = findViewById<Button>(R.id.go_back_button)
@@ -58,7 +54,8 @@ class SearchActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                clearIcon.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
+                // поменял. если я правильно понял как использовать isVisible
+                clearIcon.isVisible = !s.isNullOrEmpty()
                 savedInputText = s?.toString()
                 filterTracks(s?.toString() ?: "")
             }

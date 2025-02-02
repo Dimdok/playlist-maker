@@ -1,5 +1,6 @@
 package com.example.playlistmaker
 
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,11 +42,15 @@ class TrackAdapter(private val tracks: List<Track>) :
             artistName.text = track.artistName
             trackTime.text = track.trackTime
 
-            // Загрузка обложки с Glide
+            // нашёл вот такое решение конвертации в dp через dpi
+            val radiusDp = 4
+            val radiusPx = (radiusDp * Resources.getSystem().displayMetrics.density).toInt()
+
+            // загрузка обложки с Glide
             Glide.with(itemView)
                 .load(track.artworkUrl100)
-                .placeholder(R.drawable.ic_cover_placeholder) // Плейсхолдер
-                .transform(RoundedCorners(8)) // Закругление углов
+                .placeholder(R.drawable.ic_cover_placeholder) // плейсхолдер
+                .transform(RoundedCorners(radiusPx)) // закругление углов
                 .into(artwork)
         }
     }

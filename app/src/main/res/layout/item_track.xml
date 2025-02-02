@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/colorPrimary"
-    android:padding="@dimen/main_gap"
+    android:paddingHorizontal="@dimen/main_gap"
+    android:paddingVertical="@dimen/half_main_gap"
     android:theme="@style/typography">
 
     <!-- обложка трека -->
@@ -24,7 +25,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingHorizontal="8dp"
+        android:paddingHorizontal="@dimen/half_main_gap"
         app:layout_constraintBottom_toBottomOf="@id/artworkImageView"
         app:layout_constraintEnd_toStartOf="@id/nextIconImageView"
         app:layout_constraintStart_toEndOf="@id/artworkImageView"
