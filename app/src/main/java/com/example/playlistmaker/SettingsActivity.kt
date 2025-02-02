@@ -1,6 +1,7 @@
 package com.example.playlistmaker
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
@@ -8,10 +9,15 @@ import android.widget.Switch
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class SettingsActivity : AppCompatActivity() {
+    private val appSettingsPrefsName: String = "AppSettings"
+    private val darkThemeKey: String = "DarkTheme"
+    private var sharedPreferences: SharedPreferences = getSharedPreferences(appSettingsPrefsName, MODE_PRIVATE)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -28,10 +34,11 @@ class SettingsActivity : AppCompatActivity() {
             finish()
         }
 
-        // TODO: переключатель темной темы
-        val themeSwitch = findViewById<Switch>(R.id.themeSwitch)
+        // переключатель темной темы
+        val themeSwitch: Switch = findViewById(R.id.themeSwitch)
+        themeSwitch.isChecked = isDarkThemeEnabled()
         themeSwitch.setOnCheckedChangeListener { _, isChecked ->
-            // функционал смены темы
+            setDarkTheme(isChecked)
         }
 
         // кнопка Поделиться приложением
@@ -76,5 +83,16 @@ class SettingsActivity : AppCompatActivity() {
             data = Uri.parse(url)
         }
         startActivity(intent)
+    }
+
+    private fun isDarkThemeEnabled(): Boolean {
+        return sharedPreferences.getBoolean(darkThemeKey, false)
+    }
+
+    private fun setDarkTheme(enabled: Boolean) {
+        val mode = if (enabled) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+        AppCompatDelegate.setDefaultNightMode(mode)
+        sharedPreferences.edit().putBoolean(darkThemeKey, enabled).apply()
+        delegate.applyDayNight()
     }
 }

@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingVertical="@dimen/main_padding">
+            android:paddingVertical="@dimen/main_gap">
 
             <Switch
                 android:id="@+id/themeSwitch"
