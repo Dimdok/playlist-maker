@@ -26,10 +26,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class SearchActivity : AppCompatActivity() {
+    private lateinit var inputEditText: EditText
+    private lateinit var adapter: TrackAdapter
     private var savedInputText: String? = null
     private val inputTextKey: String = "SAVED_INPUT_TEXT"
     private var filteredTracks = mutableListOf<Track>() // Отфильтрованные треки
-    private lateinit var adapter: TrackAdapter
     private var lastQuery: String? = null // Сохраняем последний неудавшийся запрос
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +50,7 @@ class SearchActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
 
         // Инициализация элементов поиска
-        val inputEditText: EditText = findViewById(R.id.inputEditText)
+        inputEditText = findViewById(R.id.inputEditText)
         val clearIcon: ImageView = findViewById(R.id.clearIcon)
 
         // кнопка Вернуться назад
@@ -81,7 +82,7 @@ class SearchActivity : AppCompatActivity() {
             savedInputText = null
             clearIcon.visibility = View.GONE
             hideKeyboard(inputEditText)
-            filterTracks("")
+            filteredTracks.clear()
             hideMessageLayouts()
         }
 
@@ -114,7 +115,7 @@ class SearchActivity : AppCompatActivity() {
     // Поиск треков через API
     private fun searchTracks(query: String) {
         if (query.isEmpty()) {
-            filterTracks("")
+            filteredTracks.clear()
             return
         }
 
@@ -127,6 +128,8 @@ class SearchActivity : AppCompatActivity() {
         service.search(query).enqueue(object : Callback<ItunesResponse> {
             override fun onResponse(call: Call<ItunesResponse>, response: Response<ItunesResponse>) {
                 if (response.isSuccessful) {
+                    hideMessageLayouts()
+                    lastQuery = null
                     val tracks = response.body()?.results ?: emptyList()
                     filteredTracks.clear()
                     filteredTracks.addAll(tracks.map {
@@ -137,17 +140,21 @@ class SearchActivity : AppCompatActivity() {
                             it.artworkUrl100
                         )
                     })
+
                     if (filteredTracks.isEmpty()) {
+                        filteredTracks.clear()
+                        hideKeyboard(inputEditText)
                         showNotFoundLayout()
-                    } else {
-                        hideMessageLayouts()
                     }
+
                     adapter.notifyDataSetChanged()
                 }
             }
 
             override fun onFailure(call: Call<ItunesResponse>, t: Throwable) {
                 lastQuery = query
+                filteredTracks.clear()
+                hideKeyboard(inputEditText)
                 showErrorLayout()
             }
         })
