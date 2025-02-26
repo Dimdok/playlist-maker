@@ -6,19 +6,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/typography"
+    android:background="?attr/colorPrimary"
     tools:context=".SearchActivity">
 
     <LinearLayout
+        android:id="@+id/searchContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?attr/colorPrimary"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:background="?attr/colorPrimary"
             android:orientation="horizontal">
 
             <Button
@@ -34,7 +36,6 @@
             android:id="@+id/inputLayout"
             style="@style/input_layout">
 
-            <!-- иконка лупы -->
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -43,13 +44,13 @@
                 android:src="@drawable/ic_search_16"
                 app:tint="?attr/colorOnSurface" />
 
-            <!-- текстовое поле -->
             <EditText
                 android:id="@+id/inputEditText"
                 style="@style/input_text"
-                android:hint="@string/search" />
+                android:hint="@string/search"
+                android:imeOptions="actionDone"
+                android:singleLine="true" />
 
-            <!-- иконка очистки инпута -->
             <ImageView
                 android:id="@+id/clearIcon"
                 android:layout_width="wrap_content"
@@ -62,15 +63,47 @@
                 android:visibility="gone"
                 app:tint="?attr/colorOnSurface" />
         </FrameLayout>
+    </LinearLayout>
 
-        <!-- RecyclerView для отображения списка треков -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+    <!-- RecyclerView для отображения списка треков -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/half_main_gap"
+        android:layout_weight="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchContainer" />
+
+    <!-- Контейнер для отображения сообщений -->
+    <LinearLayout
+        android:id="@+id/messageContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchContainer">
+
+        <!-- Контейнер для отображения ошибок -->
+        <FrameLayout
+            android:id="@+id/errorLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/half_main_gap"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/inputLayout"
-            tools:listitem="@layout/item_track" />
+            android:visibility="gone">
+
+            <include layout="@layout/error_layout" />
+        </FrameLayout>
+
+        <!-- Контейнер для отображения сообщения "Ничего не найдено" -->
+        <FrameLayout
+            android:id="@+id/notFoundLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <include layout="@layout/not_found_layout" />
+        </FrameLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

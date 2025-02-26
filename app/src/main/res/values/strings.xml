@@ -19,4 +19,7 @@
     <string name="android_practicum_url">https://practicum.yandex.ru/android-developer/?from=catalog</string>
     <string name="clear">clear</string>
     <string name="cover_image">cover image</string>
+    <string name="connection_error_text">Проблемы со связью \n \n Загрузка не удалась. Проверьте \n подключение к интернету</string>
+    <string name="reload">Обновить</string>
+    <string name="data_not_found">Ничего не нашлось</string>
 </resources>

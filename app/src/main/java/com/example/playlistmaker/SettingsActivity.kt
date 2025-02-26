@@ -16,10 +16,11 @@ import androidx.core.view.WindowInsetsCompat
 class SettingsActivity : AppCompatActivity() {
     private val appSettingsPrefsName: String = "AppSettings"
     private val darkThemeKey: String = "DarkTheme"
-    private var sharedPreferences: SharedPreferences = getSharedPreferences(appSettingsPrefsName, MODE_PRIVATE)
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        sharedPreferences = getSharedPreferences(appSettingsPrefsName, MODE_PRIVATE)
         enableEdgeToEdge()
         setContentView(R.layout.activity_settings)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.settings)) { v, insets ->
