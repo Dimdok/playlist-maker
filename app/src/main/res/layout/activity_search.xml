@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/search"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@style/typography"
     android:background="?attr/colorPrimary"
+    android:orientation="vertical"
+    android:theme="@style/typography"
     tools:context=".SearchActivity">
+
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/go_back_button"
+            style="@style/go_back_button" />
+
+        <TextView
+            style="@style/header_text"
+            android:text="@string/search" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/searchContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/go_back_button"
-                style="@style/go_back_button" />
-
-            <TextView
-                style="@style/header_text"
-                android:text="@string/search" />
-        </LinearLayout>
+        android:layout_marginBottom="@dimen/half_main_gap"
+        android:orientation="vertical">
 
         <FrameLayout
             android:id="@+id/inputLayout"
@@ -45,7 +45,7 @@
                 app:tint="?attr/colorOnSurface" />
 
             <EditText
-                android:id="@+id/inputEditText"
+                android:id="@+id/searchField"
                 style="@style/input_text"
                 android:hint="@string/search"
                 android:imeOptions="actionDone"
@@ -65,16 +65,42 @@
         </FrameLayout>
     </LinearLayout>
 
-    <!-- RecyclerView для отображения списка треков -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <!-- Контейнер для отображения списка треков -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/half_main_gap"
-        android:layout_weight="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchContainer" />
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/historyTitle"
+            style="@style/message_base"
+            android:layout_marginBottom="@dimen/main_gap"
+            android:text="@string/search_history"
+            android:visibility="gone" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="0"
+            tools:listitem="@layout/item_track" />
+
+        <Button
+            android:id="@+id/clearHistoryButton"
+            style="@style/rounded_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/clear_search_history"
+            android:visibility="gone" />
+
+    </LinearLayout>
 
     <!-- Контейнер для отображения сообщений -->
     <LinearLayout
@@ -82,28 +108,46 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchContainer">
+        android:gravity="center"
+        android:orientation="vertical">
 
-        <!-- Контейнер для отображения ошибок -->
-        <FrameLayout
+        <!-- отображение ошибок -->
+        <LinearLayout
             android:id="@+id/errorLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="?attr/colorPrimary"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:theme="@style/typography"
             android:visibility="gone">
 
-            <include layout="@layout/error_layout" />
-        </FrameLayout>
+            <TextView
+                style="@style/connection_error_message"
+                android:text="@string/connection_error_text" />
 
-        <!-- Контейнер для отображения сообщения "Ничего не найдено" -->
-        <FrameLayout
+            <Button
+                android:id="@+id/retryButton"
+                style="@style/rounded_button"
+                android:layout_marginTop="@dimen/main_gap"
+                android:text="@string/reload" />
+        </LinearLayout>
+
+        <!-- отображение сообщения "Ничего не найдено" -->
+        <LinearLayout
             android:id="@+id/notFoundLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="?attr/colorPrimary"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:theme="@style/typography"
             android:visibility="gone">
 
-            <include layout="@layout/not_found_layout" />
-        </FrameLayout>
+            <TextView
+                style="@style/not_found_message"
+                android:text="@string/data_not_found" />
+        </LinearLayout>
     </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

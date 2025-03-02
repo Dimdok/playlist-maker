@@ -150,7 +150,7 @@
         <item name="android:backgroundTint">?attr/colorPrimaryVariant</item>
     </style>
 
-    <style name="error_message_base">
+    <style name="message_base">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:drawablePadding">@dimen/main_gap</item>
@@ -158,11 +158,11 @@
         <item name="android:textSize">19sp</item>
     </style>
 
-    <style name="connection_error_message" parent="error_message_base">
+    <style name="connection_error_message" parent="message_base">
         <item name="drawableTopCompat">@drawable/ic_no_connection_l</item>
     </style>
 
-    <style name="not_found_message" parent="error_message_base">
+    <style name="not_found_message" parent="message_base">
         <item name="drawableTopCompat">@drawable/ic_not_found_l</item>
     </style>
 </resources>
