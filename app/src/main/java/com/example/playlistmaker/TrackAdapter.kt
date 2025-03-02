@@ -14,11 +14,22 @@ data class Track(
     val trackName: String,
     val artistName: String,
     val trackTime: String,
-    val artworkUrl100: String
+    val artworkUrl100: String,
+    val trackId: Int,
 )
 
-class TrackAdapter(private val tracks: List<Track>) :
-    RecyclerView.Adapter<TrackAdapter.TrackViewHolder>() {
+class TrackAdapter(private var tracks: List<Track>) : RecyclerView.Adapter<TrackAdapter.TrackViewHolder>() {
+
+    private var onItemClickListener: ((Track) -> Unit)? = null
+
+    fun updateTracks(newTracks: List<Track>) {
+        tracks = newTracks
+        notifyDataSetChanged()
+    }
+
+    fun setOnItemClickListener(listener: (Track) -> Unit) {
+        onItemClickListener = listener
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_track, parent, false)
@@ -27,6 +38,10 @@ class TrackAdapter(private val tracks: List<Track>) :
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         holder.bind(tracks[position])
+
+        holder.itemView.setOnClickListener {
+            onItemClickListener?.invoke(tracks[position])
+        }
     }
 
     override fun getItemCount() = tracks.size
@@ -42,7 +57,7 @@ class TrackAdapter(private val tracks: List<Track>) :
             artistName.text = track.artistName
             trackTime.text = track.trackTime
 
-            // нашёл вот такое решение конвертации в dp через dpi
+            // конвертация в dp через dpi
             val radiusDp = 4
             val radiusPx = (radiusDp * Resources.getSystem().displayMetrics.density).toInt()
 

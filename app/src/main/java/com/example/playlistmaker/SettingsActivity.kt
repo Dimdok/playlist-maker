@@ -9,18 +9,15 @@ import android.widget.Switch
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class SettingsActivity : AppCompatActivity() {
-    private val appSettingsPrefsName: String = "AppSettings"
-    private val darkThemeKey: String = "DarkTheme"
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var appContext: App
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        sharedPreferences = getSharedPreferences(appSettingsPrefsName, MODE_PRIVATE)
         enableEdgeToEdge()
         setContentView(R.layout.activity_settings)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.settings)) { v, insets ->
@@ -28,6 +25,8 @@ class SettingsActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        appContext  = (applicationContext as App)
+        sharedPreferences = getSharedPreferences(appContext.appSettingsPrefsName, MODE_PRIVATE)
 
         // кнопка Вернуться назад
         val goBackButton = findViewById<Button>(R.id.go_back_button)
@@ -37,9 +36,10 @@ class SettingsActivity : AppCompatActivity() {
 
         // переключатель темной темы
         val themeSwitch: Switch = findViewById(R.id.themeSwitch)
-        themeSwitch.isChecked = isDarkThemeEnabled()
-        themeSwitch.setOnCheckedChangeListener { _, isChecked ->
-            setDarkTheme(isChecked)
+        themeSwitch.isChecked = sharedPreferences.getBoolean(appContext.darkThemeKey, false)
+
+        themeSwitch.setOnCheckedChangeListener { _, checked ->
+            appContext.switchTheme(checked)
         }
 
         // кнопка Поделиться приложением
@@ -84,16 +84,5 @@ class SettingsActivity : AppCompatActivity() {
             data = Uri.parse(url)
         }
         startActivity(intent)
-    }
-
-    private fun isDarkThemeEnabled(): Boolean {
-        return sharedPreferences.getBoolean(darkThemeKey, false)
-    }
-
-    private fun setDarkTheme(enabled: Boolean) {
-        val mode = if (enabled) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
-        AppCompatDelegate.setDefaultNightMode(mode)
-        sharedPreferences.edit().putBoolean(darkThemeKey, enabled).apply()
-        delegate.applyDayNight()
     }
 }

@@ -8,49 +8,66 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
-import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.text.SimpleDateFormat
-import java.util.*
 
 class SearchActivity : AppCompatActivity() {
-    private lateinit var inputEditText: EditText
-    private lateinit var adapter: TrackAdapter
+    private lateinit var searchField: EditText
+    private lateinit var trackAdapter: TrackAdapter
+    private lateinit var historyAdapter: TrackAdapter
+    private lateinit var searchHistory: SearchHistory
+    private lateinit var trackSearcher: TrackSearcher
+
     private var savedInputText: String? = null
     private val inputTextKey: String = "SAVED_INPUT_TEXT"
-    private var filteredTracks = mutableListOf<Track>() // Отфильтрованные треки
-    private var lastQuery: String? = null // Сохраняем последний неудавшийся запрос
+    private var filteredTracks = mutableListOf<Track>()
+    private var lastQuery: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_search)
+        searchHistory = SearchHistory(this)
+        showHistory(false)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.search)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        // Инициализация RecyclerView
+        // инициализация RecyclerView
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = TrackAdapter(filteredTracks)
-        recyclerView.adapter = adapter
 
-        // Инициализация элементов поиска
-        inputEditText = findViewById(R.id.inputEditText)
+        // инициализация адаптеров
+        trackAdapter = TrackAdapter(filteredTracks)
+        historyAdapter = TrackAdapter(searchHistory.getTracks())
+
+        // установка начального адаптера
+        recyclerView.adapter = trackAdapter
+
+        fun showSearchHistory() {
+            // проверяем есть ли треки в истории поиска
+            val tracks = searchHistory.getTracks()
+
+            if (searchField.hasFocus() && searchField.text.isEmpty() && tracks.isNotEmpty()) {
+                historyAdapter.updateTracks(tracks)
+                recyclerView.adapter = historyAdapter
+                showHistory(true)
+            } else {
+                showHistory(false)
+                recyclerView.adapter = trackAdapter
+            }
+        }
+
+        // инициализация элементов поиска
+        searchField = findViewById(R.id.searchField)
         val clearIcon: ImageView = findViewById(R.id.clearIcon)
 
         // кнопка Вернуться назад
@@ -59,105 +76,93 @@ class SearchActivity : AppCompatActivity() {
             finish()
         }
 
-        // Обработка ввода текста
-        inputEditText.addTextChangedListener(object : TextWatcher {
+        // обработка ввода текста
+        searchField.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                clearIcon.isVisible = !s.isNullOrEmpty()
+                if (s.isNullOrEmpty()) filteredTracks.clear() else clearIcon.isVisible
                 savedInputText = s?.toString()
+                showSearchHistory()
             }
 
             override fun afterTextChanged(s: Editable?) {}
         })
 
-        // показываем клавиатуру при фокусе инпута
-        inputEditText.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) showKeyboard(inputEditText)
+        searchField.setOnFocusChangeListener { _, hasFocus ->
+            // показываем клавиатуру при фокусе инпута
+            if (hasFocus) {
+                showKeyboard(searchField)
+                showSearchHistory()
+            }
         }
 
-        // Очистка текста
+        // очистка текста
         clearIcon.setOnClickListener {
-            inputEditText.text.clear()
+            searchField.text.clear()
             savedInputText = null
             clearIcon.visibility = View.GONE
-            hideKeyboard(inputEditText)
+            hideKeyboard(searchField)
             filteredTracks.clear()
             hideMessageLayouts()
         }
 
-        // Обработка нажатия на кнопку Done
-        inputEditText.setOnEditorActionListener { _, actionId, _ ->
+        // обработка нажатия на кнопку Done
+        searchField.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                val query = inputEditText.text.toString()
-                searchTracks(query)
+                val query = searchField.text.toString()
+                trackSearcher.searchTracks(query)
                 true
             }
             false
         }
 
-        // Обработка нажатия на кнопку "Обновить"
+        // обработка нажатия на кнопку "Обновить"
         val retryButton = findViewById<Button>(R.id.retryButton)
         retryButton.setOnClickListener {
             lastQuery?.let { retrySearch(it) }
         }
+
+        val clearHistoryButton: Button = findViewById(R.id.clearHistoryButton)
+        clearHistoryButton.setOnClickListener {
+            searchHistory.clearHistory()
+            historyAdapter.updateTracks(emptyList())
+            showHistory(false)
+        }
+
+        // обработка нажатия на трек в списке результатов поиска
+        this.trackAdapter.setOnItemClickListener { track ->
+            searchHistory.saveTrack(track)
+            historyAdapter.updateTracks(searchHistory.getTracks())
+        }
+
+        trackSearcher = TrackSearcher(
+            onSearchResult = { tracks ->
+                filteredTracks.clear()
+                filteredTracks.addAll(tracks)
+                trackAdapter.notifyDataSetChanged()
+                hideMessageLayouts()
+                showHistory(false)
+                if (tracks.isEmpty()) {
+                    hideKeyboard(searchField)
+                    showNotFoundLayout()
+                }
+            },
+            onSearchError = {
+                lastQuery = searchField.text.toString()
+                filteredTracks.clear()
+                hideKeyboard(searchField)
+                showErrorLayout()
+            }
+        )
     }
 
-    // Фильтрация треков по названию песни или исполнителя
+    // фильтрация треков по названию песни или исполнителя
     private fun filterTracks(query: String) {
         filteredTracks.clear()
         if (query.isEmpty()) {
-            adapter.notifyDataSetChanged()
+            trackAdapter.notifyDataSetChanged()
         }
-    }
-
-
-    // Поиск треков через API
-    private fun searchTracks(query: String) {
-        if (query.isEmpty()) {
-            filteredTracks.clear()
-            return
-        }
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://itunes.apple.com")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val service = retrofit.create(ItunesService::class.java)
-        service.search(query).enqueue(object : Callback<ItunesResponse> {
-            override fun onResponse(call: Call<ItunesResponse>, response: Response<ItunesResponse>) {
-                if (response.isSuccessful) {
-                    hideMessageLayouts()
-                    lastQuery = null
-                    val tracks = response.body()?.results ?: emptyList()
-                    filteredTracks.clear()
-                    filteredTracks.addAll(tracks.map {
-                        Track(
-                            it.trackName,
-                            it.artistName,
-                            SimpleDateFormat("mm:ss", Locale.getDefault()).format(it.trackTimeMillis),
-                            it.artworkUrl100
-                        )
-                    })
-
-                    if (filteredTracks.isEmpty()) {
-                        filteredTracks.clear()
-                        hideKeyboard(inputEditText)
-                        showNotFoundLayout()
-                    }
-
-                    adapter.notifyDataSetChanged()
-                }
-            }
-
-            override fun onFailure(call: Call<ItunesResponse>, t: Throwable) {
-                lastQuery = query
-                filteredTracks.clear()
-                hideKeyboard(inputEditText)
-                showErrorLayout()
-            }
-        })
     }
 
     // сохранение стейта инпута
@@ -170,7 +175,7 @@ class SearchActivity : AppCompatActivity() {
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         savedInputText = savedInstanceState.getString(inputTextKey)
-        findViewById<EditText>(R.id.inputEditText).setText(savedInputText)
+        findViewById<EditText>(R.id.searchField).setText(savedInputText)
         filterTracks(savedInputText ?: "")
     }
 
@@ -185,21 +190,29 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun showErrorLayout() {
-        findViewById<FrameLayout>(R.id.errorLayout).visibility = View.VISIBLE
-        findViewById<FrameLayout>(R.id.notFoundLayout).visibility = View.GONE
+        findViewById<LinearLayout>(R.id.notFoundLayout).visibility = View.GONE
+        showHistory(false)
+        findViewById<LinearLayout>(R.id.errorLayout).visibility = View.VISIBLE
     }
 
     private fun showNotFoundLayout() {
-        findViewById<FrameLayout>(R.id.errorLayout).visibility = View.GONE
-        findViewById<FrameLayout>(R.id.notFoundLayout).visibility = View.VISIBLE
+        findViewById<LinearLayout>(R.id.errorLayout).visibility = View.GONE
+        showHistory(false)
+        findViewById<LinearLayout>(R.id.notFoundLayout).visibility = View.VISIBLE
     }
 
     private fun hideMessageLayouts() {
-        findViewById<FrameLayout>(R.id.errorLayout).visibility = View.GONE
-        findViewById<FrameLayout>(R.id.notFoundLayout).visibility = View.GONE
+        findViewById<LinearLayout>(R.id.errorLayout).visibility = View.GONE
+        findViewById<LinearLayout>(R.id.notFoundLayout).visibility = View.GONE
+    }
+
+    private fun showHistory(isVisible: Boolean) {
+        val visible = if (isVisible) View.VISIBLE else View.GONE
+        findViewById<TextView>(R.id.historyTitle).visibility = visible
+        findViewById<Button>(R.id.clearHistoryButton).visibility = visible
     }
 
     private fun retrySearch(query: String) {
-        searchTracks(query)
+        trackSearcher.searchTracks(query)
     }
 }
