@@ -55,9 +55,9 @@ class SearchActivity : AppCompatActivity() {
         fun showSearchHistory() {
             // проверяем есть ли треки в истории поиска
             val tracks = searchHistory.getTracks()
-            historyAdapter.updateTracks(tracks)
 
             if (searchField.hasFocus() && searchField.text.isEmpty() && tracks.isNotEmpty()) {
+                historyAdapter.updateTracks(tracks)
                 recyclerView.adapter = historyAdapter
                 showHistory(true)
             } else {
@@ -81,7 +81,7 @@ class SearchActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                clearIcon.isVisible = !s.isNullOrEmpty()
+                if (s.isNullOrEmpty()) filteredTracks.clear() else clearIcon.isVisible
                 savedInputText = s?.toString()
                 showSearchHistory()
             }
