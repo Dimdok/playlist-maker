@@ -18,6 +18,10 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 
+enum class MessageType {
+    NONE, ERROR, NOT_FOUND
+}
+
 class SearchActivity : AppCompatActivity() {
     private lateinit var searchField: EditText
     private lateinit var trackAdapter: TrackAdapter
@@ -26,7 +30,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var trackSearcher: TrackSearcher
 
     private var savedInputText: String? = null
-    private val inputTextKey: String = "SAVED_INPUT_TEXT"
+    private val inputTextKey: String = "savedInputText"
     private var filteredTracks = mutableListOf<Track>()
     private var lastQuery: String? = null
 
@@ -104,7 +108,7 @@ class SearchActivity : AppCompatActivity() {
             clearIcon.visibility = View.GONE
             hideKeyboard(searchField)
             filteredTracks.clear()
-            hideMessageLayouts()
+            showMessageLayout(MessageType.NONE)
         }
 
         // обработка нажатия на кнопку Done
@@ -141,18 +145,18 @@ class SearchActivity : AppCompatActivity() {
                 filteredTracks.clear()
                 filteredTracks.addAll(tracks)
                 trackAdapter.notifyDataSetChanged()
-                hideMessageLayouts()
+                showMessageLayout(MessageType.NONE)
                 showHistory(false)
                 if (tracks.isEmpty()) {
                     hideKeyboard(searchField)
-                    showNotFoundLayout()
+                    showMessageLayout(MessageType.NOT_FOUND)
                 }
             },
             onSearchError = {
                 lastQuery = searchField.text.toString()
                 filteredTracks.clear()
                 hideKeyboard(searchField)
-                showErrorLayout()
+                showMessageLayout(MessageType.ERROR)
             }
         )
     }
@@ -189,23 +193,6 @@ class SearchActivity : AppCompatActivity() {
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    private fun showErrorLayout() {
-        findViewById<LinearLayout>(R.id.notFoundLayout).visibility = View.GONE
-        showHistory(false)
-        findViewById<LinearLayout>(R.id.errorLayout).visibility = View.VISIBLE
-    }
-
-    private fun showNotFoundLayout() {
-        findViewById<LinearLayout>(R.id.errorLayout).visibility = View.GONE
-        showHistory(false)
-        findViewById<LinearLayout>(R.id.notFoundLayout).visibility = View.VISIBLE
-    }
-
-    private fun hideMessageLayouts() {
-        findViewById<LinearLayout>(R.id.errorLayout).visibility = View.GONE
-        findViewById<LinearLayout>(R.id.notFoundLayout).visibility = View.GONE
-    }
-
     private fun showHistory(isVisible: Boolean) {
         val visible = if (isVisible) View.VISIBLE else View.GONE
         findViewById<TextView>(R.id.historyTitle).visibility = visible
@@ -214,5 +201,24 @@ class SearchActivity : AppCompatActivity() {
 
     private fun retrySearch(query: String) {
         trackSearcher.searchTracks(query)
+    }
+
+    private fun showMessageLayout(type: MessageType) {
+        when (type) {
+            MessageType.ERROR -> {
+                findViewById<LinearLayout>(R.id.notFoundLayout).visibility = View.GONE
+                showHistory(false)
+                findViewById<LinearLayout>(R.id.errorLayout).visibility = View.VISIBLE
+            }
+            MessageType.NOT_FOUND -> {
+                findViewById<LinearLayout>(R.id.errorLayout).visibility = View.GONE
+                showHistory(false)
+                findViewById<LinearLayout>(R.id.notFoundLayout).visibility = View.VISIBLE
+            }
+            else -> {
+                findViewById<LinearLayout>(R.id.errorLayout).visibility = View.GONE
+                findViewById<LinearLayout>(R.id.notFoundLayout).visibility = View.GONE
+            }
+        }
     }
 }
