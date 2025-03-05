@@ -2,7 +2,6 @@ package com.example.playlistmaker
 
 import android.content.Intent
 import android.content.SharedPreferences
-import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Switch
@@ -11,6 +10,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.net.toUri
 
 class SettingsActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
@@ -71,7 +71,7 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun writeSupportEmail() {
         val intent = Intent(Intent.ACTION_SENDTO).apply {
-            data = Uri.parse("mailto:${getString(R.string.support_email)}")
+            data = "mailto:${getString(R.string.support_email)}".toUri()
             putExtra(Intent.EXTRA_SUBJECT, getString(R.string.email_subject))
             putExtra(Intent.EXTRA_TEXT, getString(R.string.email_body))
         }
@@ -81,7 +81,7 @@ class SettingsActivity : AppCompatActivity() {
     private fun openUserAgreement() {
         val url = getString(R.string.user_agreement_url)
         val intent = Intent(Intent.ACTION_VIEW).apply {
-            data = Uri.parse(url)
+            data = url.toUri()
         }
         startActivity(intent)
     }

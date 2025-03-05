@@ -1,63 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/settings"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorPrimary"
+    android:orientation="vertical"
     android:theme="@style/typography"
     tools:context=".SettingsActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?attr/colorPrimary"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:orientation="horizontal">
+        <Button
+            android:id="@+id/go_back_button"
+            style="@style/go_back_button" />
 
-            <Button
-                android:id="@+id/go_back_button"
-                style="@style/go_back_button" />
-
-            <TextView
-                style="@style/header_text"
-                android:text="@string/settings" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingVertical="@dimen/main_gap">
-
-            <Switch
-                android:id="@+id/themeSwitch"
-                style="@style/settings_theme_switch"
-                android:text="@string/dark_theme"
-                tools:ignore="UseSwitchCompatOrMaterialXml" />
-
-            <TextView
-                android:id="@+id/shareAppButton"
-                style="@style/item_themed"
-                android:text="@string/share_app"
-                app:drawableEndCompat="@drawable/ic_share" />
-
-            <TextView
-                android:id="@+id/writeSupportButton"
-                style="@style/item_themed"
-                android:text="@string/write_support"
-                app:drawableEndCompat="@drawable/ic_support" />
-
-            <TextView
-                android:id="@+id/userAgreementButton"
-                style="@style/item_themed"
-                android:text="@string/user_agreement"
-                app:drawableEndCompat="@drawable/ic_arrow_forward" />
-        </LinearLayout>
+        <TextView
+            style="@style/header_text"
+            android:text="@string/settings" />
     </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingVertical="@dimen/main_gap">
+
+        <Switch
+            android:id="@+id/themeSwitch"
+            style="@style/settings_theme_switch"
+            android:text="@string/dark_theme"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+        <TextView
+            android:id="@+id/shareAppButton"
+            style="@style/item_themed"
+            android:text="@string/share_app"
+            app:drawableEndCompat="@drawable/ic_share" />
+
+        <TextView
+            android:id="@+id/writeSupportButton"
+            style="@style/item_themed"
+            android:text="@string/write_support"
+            app:drawableEndCompat="@drawable/ic_support" />
+
+        <TextView
+            android:id="@+id/userAgreementButton"
+            style="@style/item_themed"
+            android:text="@string/user_agreement"
+            app:drawableEndCompat="@drawable/ic_arrow_forward" />
+    </LinearLayout>
+</LinearLayout>
+

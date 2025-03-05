@@ -6,9 +6,10 @@ import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
 
 class App : Application() {
+    val darkThemeKey: String = "darkThemeKey"
+    val appSettingsPrefsName: String = "playlistMakerSettings"
+
     private var darkTheme = false
-    val appSettingsPrefsName: String = "playlist_maker_settings"
-    val darkThemeKey: String = "dark_theme_key"
     private val firstRunKey = "firstRun"
     private lateinit var sharedPreferences: SharedPreferences
 
