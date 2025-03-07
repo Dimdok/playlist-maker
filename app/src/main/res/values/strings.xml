@@ -24,4 +24,9 @@
     <string name="data_not_found">Ничего не нашлось</string>
     <string name="search_history">История поиска</string>
     <string name="clear_search_history">Очистить историю</string>
+    <string name="collection_label">Альбом</string>
+    <string name="release_date_label">Год</string>
+    <string name="genre_label">Жанр</string>
+    <string name="country_label">Страна</string>
+    <string name="track_time_label">Длительность</string>
 </resources>

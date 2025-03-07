@@ -13,7 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PlaylistMaker"
         android:enableOnBackInvokedCallback="true"
-        tools:targetApi="31">
+        tools:targetApi="33">
+        <activity
+            android:name=".AudioPlayerActivity"
+            android:exported="false" />
         <activity
             android:name=".SearchActivity"
             android:exported="false" />

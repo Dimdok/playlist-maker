@@ -7,9 +7,8 @@ import com.google.gson.reflect.TypeToken
 import androidx.core.content.edit
 
 class SearchHistory(context: Context) {
-    private val prefsName = "searchHistory"
-    private val prefsKey = "historyTracks"
-    private val sharedPreferences: SharedPreferences = context.getSharedPreferences(prefsName, Context.MODE_PRIVATE)
+    private val sharedPreferences: SharedPreferences =
+        context.getSharedPreferences(Constants.SEARCH_HISTORY_KEY, Context.MODE_PRIVATE)
 
     fun saveTrack(track: Track) {
         val tracks = getTracks().toMutableList()
@@ -25,7 +24,7 @@ class SearchHistory(context: Context) {
     }
 
     fun getTracks(): List<Track> {
-        val json = sharedPreferences.getString(prefsKey, null)
+        val json = sharedPreferences.getString(Constants.HISTORY_TRACKS_KEY, null)
         return if (json != null) {
             Gson().fromJson(json, object : TypeToken<List<Track>>() {}.type)
         } else {
@@ -39,6 +38,6 @@ class SearchHistory(context: Context) {
 
     private fun saveTracks(tracks: List<Track>) {
         val json = Gson().toJson(tracks)
-        sharedPreferences.edit() { putString(prefsKey, json) }
+        sharedPreferences.edit() { putString(Constants.HISTORY_TRACKS_KEY, json) }
     }
 }

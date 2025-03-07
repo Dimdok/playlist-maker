@@ -35,4 +35,16 @@
     <style name="not_found_message" parent="message_base">
         <item name="drawableTopCompat">@drawable/ic_not_found_d</item>
     </style>
+
+    <style name="toolbar" parent="toolbar_base">
+        <item name="navigationIcon">@drawable/ic_arrow_back_d</item>
+    </style>
+
+    <style name="grey_button" parent="Widget.AppCompat.ImageButton">
+        <item name="android:background">@drawable/round_button_d</item>
+    </style>
+
+    <style name="play_button" parent="Widget.AppCompat.ImageButton">
+        <item name="android:background">@drawable/ic_play_button_100_d</item>
+    </style>
 </resources>

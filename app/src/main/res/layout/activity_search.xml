@@ -10,20 +10,10 @@
     android:theme="@style/typography"
     tools:context=".SearchActivity">
 
-    <LinearLayout
-        android:id="@+id/header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/go_back_button"
-            style="@style/go_back_button" />
-
-        <TextView
-            style="@style/header_text"
-            android:text="@string/search" />
-    </LinearLayout>
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="@style/toolbar"
+        app:title="@string/search" />
 
     <LinearLayout
         android:id="@+id/searchContainer"

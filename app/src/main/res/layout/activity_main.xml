@@ -16,19 +16,19 @@
     <LinearLayout style="@style/main_page_container">
 
         <Button
-            android:id="@+id/search_button"
+            android:id="@+id/searchButton"
             style="@style/big_button"
             android:text="@string/search"
             app:icon="@drawable/ic_search_24" />
 
         <Button
-            android:id="@+id/library_button"
+            android:id="@+id/libraryButton"
             style="@style/big_button"
             android:text="@string/media_library"
             app:icon="@drawable/ic_media_library" />
 
         <Button
-            android:id="@+id/settings_button"
+            android:id="@+id/settingsButton"
             style="@style/big_button"
             android:text="@string/settings"
             app:icon="@drawable/ic_settings" />
