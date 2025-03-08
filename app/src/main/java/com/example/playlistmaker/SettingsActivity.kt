@@ -3,11 +3,11 @@ package com.example.playlistmaker
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.widget.Button
 import android.widget.Switch
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.net.toUri
@@ -26,17 +26,17 @@ class SettingsActivity : AppCompatActivity() {
             insets
         }
         appContext  = (applicationContext as App)
-        sharedPreferences = getSharedPreferences(appContext.appSettingsPrefsName, MODE_PRIVATE)
+        sharedPreferences = getSharedPreferences(Constants.APP_SETTINGS_PREFS_KEY, MODE_PRIVATE)
 
-        // кнопка Вернуться назад
-        val goBackButton = findViewById<Button>(R.id.go_back_button)
-        goBackButton.setOnClickListener {
+        // кнопка назад
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        toolbar.setOnClickListener {
             finish()
         }
 
         // переключатель темной темы
         val themeSwitch: Switch = findViewById(R.id.themeSwitch)
-        themeSwitch.isChecked = sharedPreferences.getBoolean(appContext.darkThemeKey, false)
+        themeSwitch.isChecked = sharedPreferences.getBoolean(Constants.APP_SETTINGS_PREFS_KEY, false)
 
         themeSwitch.setOnCheckedChangeListener { _, checked ->
             appContext.switchTheme(checked)

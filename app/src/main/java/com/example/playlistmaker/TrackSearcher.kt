@@ -17,7 +17,7 @@ class TrackSearcher(private val onSearchResult: (List<Track>) -> Unit, private v
         }
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://itunes.apple.com")
+            .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -28,11 +28,15 @@ class TrackSearcher(private val onSearchResult: (List<Track>) -> Unit, private v
                     val tracks = response.body()?.results ?: emptyList()
                     val filteredTracks = tracks.map {
                         Track(
+                            it.trackId,
                             it.trackName,
                             it.artistName,
                             SimpleDateFormat("mm:ss", Locale.getDefault()).format(it.trackTimeMillis),
                             it.artworkUrl100,
-                            it.trackId
+                            it.collectionName,
+                            it.releaseDate,
+                            it.primaryGenreName,
+                            it.country
                         )
                     }
                     onSearchResult(filteredTracks)

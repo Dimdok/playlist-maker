@@ -6,19 +6,15 @@ import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
 
 class App : Application() {
-    val darkThemeKey: String = "darkThemeKey"
-    val appSettingsPrefsName: String = "playlistMakerSettings"
-
     private var darkTheme = false
-    private val firstRunKey = "firstRun"
     private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate() {
         super.onCreate()
         // на старте приложения считываем префы
-        sharedPreferences = getSharedPreferences(appSettingsPrefsName, MODE_PRIVATE)
-        darkTheme = sharedPreferences.getBoolean(darkThemeKey, false)
-        val isFirstRun = sharedPreferences.getBoolean(firstRunKey, true)
+        sharedPreferences = getSharedPreferences(Constants.APP_SETTINGS_PREFS_KEY, MODE_PRIVATE)
+        darkTheme = sharedPreferences.getBoolean(Constants.DARK_THEME_KEY, false)
+        val isFirstRun = sharedPreferences.getBoolean(Constants.FIRST_RUN_KEY, true)
 
         if (isFirstRun) {
             val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
@@ -28,7 +24,7 @@ class App : Application() {
             }
             // сохраняем, что первый запуск уже был
             val editor = sharedPreferences.edit()
-            editor.putBoolean(firstRunKey, false)
+            editor.putBoolean(Constants.FIRST_RUN_KEY, false)
             editor.apply()
         } else {
             switchTheme(darkTheme)
@@ -44,6 +40,6 @@ class App : Application() {
             }
         )
         // сохраняем тему в настройках при переключении
-        sharedPreferences.edit().putBoolean(darkThemeKey, darkThemeEnabled).apply()
+        sharedPreferences.edit().putBoolean(Constants.DARK_THEME_KEY, darkThemeEnabled).apply()
     }
 }

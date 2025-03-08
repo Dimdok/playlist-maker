@@ -13,24 +13,18 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.isVisible
+import android.content.Intent
 import androidx.recyclerview.widget.RecyclerView
 
-enum class MessageType {
-    NONE, ERROR, NOT_FOUND
-}
-
 class SearchActivity : AppCompatActivity() {
-    private lateinit var searchField: EditText
     private lateinit var trackAdapter: TrackAdapter
     private lateinit var historyAdapter: TrackAdapter
-    private lateinit var searchHistory: SearchHistory
     private lateinit var trackSearcher: TrackSearcher
 
     private var savedInputText: String? = null
-    private val inputTextKey: String = "savedInputText"
     private var filteredTracks = mutableListOf<Track>()
     private var lastQuery: String? = null
 
@@ -38,13 +32,15 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_search)
-        searchHistory = SearchHistory(this)
+
         showHistory(false)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.search)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        val searchHistory = SearchHistory(this)
 
         // инициализация RecyclerView
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
@@ -55,6 +51,17 @@ class SearchActivity : AppCompatActivity() {
 
         // установка начального адаптера
         recyclerView.adapter = trackAdapter
+
+        // кнопка назад
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        toolbar.setOnClickListener {
+            finish()
+        }
+
+
+        // инициализация элементов поиска
+        val searchField = findViewById<EditText>(R.id.searchField)
+        val clearIcon = findViewById<ImageView>(R.id.clearIcon)
 
         fun showSearchHistory() {
             // проверяем есть ли треки в истории поиска
@@ -70,22 +77,12 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        // инициализация элементов поиска
-        searchField = findViewById(R.id.searchField)
-        val clearIcon: ImageView = findViewById(R.id.clearIcon)
-
-        // кнопка Вернуться назад
-        val goBackButton = findViewById<Button>(R.id.go_back_button)
-        goBackButton.setOnClickListener {
-            finish()
-        }
-
         // обработка ввода текста
         searchField.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s.isNullOrEmpty()) filteredTracks.clear() else clearIcon.isVisible
+                if (s.isNullOrEmpty()) filteredTracks.clear() else clearIcon.visibility = View.VISIBLE
                 savedInputText = s?.toString()
                 showSearchHistory()
             }
@@ -135,9 +132,16 @@ class SearchActivity : AppCompatActivity() {
         }
 
         // обработка нажатия на трек в списке результатов поиска
-        this.trackAdapter.setOnItemClickListener { track ->
+        trackAdapter.setOnItemClickListener { track ->
+            // сохраняем трек в списке истории
             searchHistory.saveTrack(track)
             historyAdapter.updateTracks(searchHistory.getTracks())
+
+            openPlayer(track)
+        }
+
+        historyAdapter.setOnItemClickListener { track ->
+            openPlayer(track)
         }
 
         trackSearcher = TrackSearcher(
@@ -161,24 +165,16 @@ class SearchActivity : AppCompatActivity() {
         )
     }
 
-    // фильтрация треков по названию песни или исполнителя
-    private fun filterTracks(query: String) {
-        filteredTracks.clear()
-        if (query.isEmpty()) {
-            trackAdapter.notifyDataSetChanged()
-        }
-    }
-
     // сохранение стейта инпута
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(inputTextKey, savedInputText)
+        outState.putString(Constants.INPUT_TEXT_KEY, savedInputText)
     }
 
     // восстановление стейта инпута после пересоздания Activity
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        savedInputText = savedInstanceState.getString(inputTextKey)
+        savedInputText = savedInstanceState.getString(Constants.INPUT_TEXT_KEY)
         findViewById<EditText>(R.id.searchField).setText(savedInputText)
         filterTracks(savedInputText ?: "")
     }
@@ -186,6 +182,14 @@ class SearchActivity : AppCompatActivity() {
     private fun showKeyboard(view: View) {
         val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    // фильтрация треков по названию песни или исполнителя
+    private fun filterTracks(query: String) {
+        filteredTracks.clear()
+        if (query.isEmpty()) {
+            trackAdapter.notifyDataSetChanged()
+        }
     }
 
     private fun hideKeyboard(view: View) {
@@ -210,15 +214,28 @@ class SearchActivity : AppCompatActivity() {
                 showHistory(false)
                 findViewById<LinearLayout>(R.id.errorLayout).visibility = View.VISIBLE
             }
+
             MessageType.NOT_FOUND -> {
                 findViewById<LinearLayout>(R.id.errorLayout).visibility = View.GONE
                 showHistory(false)
                 findViewById<LinearLayout>(R.id.notFoundLayout).visibility = View.VISIBLE
             }
+
             else -> {
                 findViewById<LinearLayout>(R.id.errorLayout).visibility = View.GONE
                 findViewById<LinearLayout>(R.id.notFoundLayout).visibility = View.GONE
             }
         }
     }
+
+    private fun openPlayer(track: Track) {
+        val audioPlayerIntent = Intent(this, AudioPlayerActivity::class.java).apply {
+            putExtra(Constants.ACTIVE_TRACK_KEY, track)
+        }
+        startActivity(audioPlayerIntent)
+    }
+}
+
+enum class MessageType {
+    NONE, ERROR, NOT_FOUND
 }
